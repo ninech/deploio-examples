@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"strconv"
@@ -11,12 +13,23 @@ import (
 const (
 	responseEnvKey = "RESPONSE_TEXT"
 	portEnvKey     = "PORT"
+	realIPHeader   = "X-Forwarded-For"
 	defaultPort    = 8080
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("got request from %s\n", r.RemoteAddr)
+	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+		ip, _, err := net.SplitHostPort(req.RemoteAddr)
+		if err != nil {
+			fmt.Fprintf(w, "req.RemoteAddr: %s is not ip:port", req.RemoteAddr)
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+			return
+		}
+		if realIP := req.Header.Get(realIPHeader); len(realIP) != 0 {
+			ip = realIP
+		}
+
+		log.Printf("%s on %s request from %s\n", req.Method, req.URL.Path, ip)
 		io.WriteString(w, os.Getenv(responseEnvKey)+"\n")
 	})
 
