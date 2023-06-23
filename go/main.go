@@ -30,7 +30,7 @@ func main() {
 		}
 
 		log.Printf("%s on %s request from %s\n", req.Method, req.URL.Path, ip)
-		io.WriteString(w, os.Getenv(responseEnvKey)+" Hi!\n")
+		io.WriteString(w, os.Getenv(responseEnvKey)+"\n")
 	})
 
 	port := strconv.Itoa(defaultPort)
