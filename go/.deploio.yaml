@@ -1,5 +1,8 @@
+# Be aware if you use nctl to create your app, config settings for the app will be set to 
+# defaults and take precedence over the configs here, except env variables. Configs in this 
+# file are only used if an application is created via API with empty configs.
 size: micro
-port: 5678
+port: 8080
 replicas: 1
 env:
   - name: RESPONSE_TEXT
