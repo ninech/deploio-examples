@@ -1,6 +1,6 @@
 size: micro
 port: 5678
-replicas: 1
+replicas: 2
 env:
   - name: RESPONSE_TEXT
     value: "Hello from a 2x modified Go deplo.io app!"
