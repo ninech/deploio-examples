@@ -1,13 +1,14 @@
 package main
 
 import (
+	"embed"
 	"fmt"
-	"io"
 	"log"
 	"net"
 	"net/http"
 	"os"
 	"strconv"
+	"text/template"
 )
 
 const (
@@ -17,7 +18,15 @@ const (
 	defaultPort    = 8080
 )
 
+//go:embed index.html.tmpl
+var content embed.FS
+
 func main() {
+	tmpl, err := template.ParseFS(content, "*.tmpl")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		ip, _, err := net.SplitHostPort(req.RemoteAddr)
 		if err != nil {
@@ -30,7 +39,9 @@ func main() {
 		}
 
 		log.Printf("%s on %s request from %s\n", req.Method, req.URL.Path, ip)
-		io.WriteString(w, os.Getenv(responseEnvKey)+"\n")
+		tmpl.Execute(w, struct{ Text string }{
+			Text: os.Getenv(responseEnvKey),
+		})
 	})
 
 	port := strconv.Itoa(defaultPort)
