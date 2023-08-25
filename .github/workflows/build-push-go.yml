@@ -35,5 +35,7 @@ jobs:
             --path ./go \
             --builder paketobuildpacks/builder-jammy-buildpackless-static \
             --buildpack paketo-buildpacks/go \
+            --env "CGO_ENABLED=0" \
+            --env "BP_GO_BUILD_FLAGS=-buildmode=default" \
             --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
             --publish
