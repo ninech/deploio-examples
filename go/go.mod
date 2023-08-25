@@ -1,3 +1,3 @@
-module github.com/ctrox/go-sample
+module github.com/deploio-examples/go
 
 go 1.19
