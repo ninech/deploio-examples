@@ -14,6 +14,7 @@ import (
 const (
 	responseEnvKey = "RESPONSE_TEXT"
 	portEnvKey     = "PORT"
+	exitEnvKey     = "DEBUG_EXIT"
 	realIPHeader   = "X-Forwarded-For"
 	defaultPort    = 8080
 )
@@ -22,6 +23,15 @@ const (
 var content embed.FS
 
 func main() {
+	if val, ok := os.LookupEnv(exitEnvKey); ok {
+		code, err := strconv.Atoi(val)
+		if err != nil {
+			log.Fatalf("error parsing exit code %s to int: %s", val, err)
+		}
+		log.Printf("exiting with code %v requested by env %s", code, exitEnvKey)
+		os.Exit(code)
+	}
+
 	tmpl, err := template.ParseFS(content, "*.tmpl")
 	if err != nil {
 		log.Fatal(err)
