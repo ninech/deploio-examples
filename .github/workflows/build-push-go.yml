@@ -33,7 +33,7 @@ jobs:
         run: |
           pack build ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }} \
             --path ./go \
-            --builder paketobuildpacks/builder-jammy-buildpackless-static \
+            --builder paketobuildpacks/builder:base \
             --buildpack paketo-buildpacks/go \
             --env "CGO_ENABLED=0" \
             --env "BP_GO_BUILD_FLAGS=-buildmode=default" \
