@@ -38,3 +38,11 @@ nctl create application symfony \
   --git-url=https://github.com/ninech/deploio-examples \
   --git-sub-path=php/symfony
 ```
+
+## Python
+
+```bash
+nctl create application django \
+  --git-url=https://github.com/ninech/deploio-examples \
+  --git-sub-path=python/django
+```
