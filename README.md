@@ -1,7 +1,8 @@
 # deploio-examples
 
 This repository hosts example apps for different languages and frameworks that
-are being supported by deplo.io.
+are being supported by deplo.io. Please also check out our [language specific
+documentation](https://docs.nine.ch/docs/category/languages) for more details.
 
 ## Go
 
@@ -41,8 +42,20 @@ nctl create application symfony \
 
 ## Python
 
+The example provides a Django application which shows a random message on every
+page reload. It uses a temporary local sqlite database. Please note that the
+database will be recreated on every deployment or restart of the application
+(all data will be lost), so it really just is useful for demonstration purposes.
+For persistent data, please use a postgres or mysql external database.  The
+Django admin interface can be used to add messages. Just visit `https://<URL of
+app>/admin` to access it and use the user credentials which you pass via the env
+variables below to login.
+
 ```bash
-nctl create application django \
+nctl create application django-example \
   --git-url=https://github.com/ninech/deploio-examples \
-  --git-sub-path=python/django
+  --git-sub-path=python/django \
+  --env=DJANGO_SU_NAME=admin \
+  --env=DJANGO_SU_EMAIL=admin@example.com \
+  --env=DJANGO_SU_PASSWORD=<INSERT A PASSWORD HERE>
 ```

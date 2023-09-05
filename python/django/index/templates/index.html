@@ -25,12 +25,20 @@
     margin-left: auto;
     margin-right: auto;
   }
+  .message {
+    width: 30%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
   </style>
 </head>
 
 <body>
   <h1 style="text-align:center">Django App</h1>
   <img class="logo" src="https://docs.nine.ch/img/theme/deploio.svg"></img>
+  <p class="message">{{ message.text }}</p>
 </body>
 
 </html>

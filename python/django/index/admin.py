@@ -1,3 +1,4 @@
 from django.contrib import admin
+from index.models import WelcomeMessage
 
-# Register your models here.
+admin.site.register(WelcomeMessage)

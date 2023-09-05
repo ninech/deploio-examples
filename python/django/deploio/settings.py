@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-tp#-8ekj%&h+49bv9t(w&@admy!-$vk_kes-v_s80^1-8(bagb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [".deploio.app"]
+ALLOWED_HOSTS = [
+        ".deploio.app",
+        "127.0.0.1",
+]
 
 
 # Application definition
@@ -77,7 +80,7 @@ WSGI_APPLICATION = 'deploio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME':   '/tmp/db.sqlite3',
     }
 }
 
