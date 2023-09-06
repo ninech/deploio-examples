@@ -50,6 +50,8 @@ For persistent data, please use a postgres or mysql external database.  The
 Django admin interface can be used to add messages. Just visit `https://<URL of
 app>/admin` to access it and use the user credentials which you pass via the env
 variables below to login.
+Please also define the `SECRET_KEY` which is used to secure signed data and
+should be kept secret.
 
 ```bash
 nctl create application django-example \
@@ -57,5 +59,6 @@ nctl create application django-example \
   --git-sub-path=python/django \
   --env=DJANGO_SU_NAME=admin \
   --env=DJANGO_SU_EMAIL=admin@example.com \
-  --env=DJANGO_SU_PASSWORD=<INSERT A PASSWORD HERE>
+  --env=DJANGO_SU_PASSWORD=<INSERT A PASSWORD HERE> \
+  --env=SECRET_KEY=<VERY LONG RANDOM SECRET KEY>
 ```
