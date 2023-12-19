@@ -62,3 +62,23 @@ nctl create application django-example \
   --env=DJANGO_SU_PASSWORD=<INSERT A PASSWORD HERE> \
   --env=SECRET_KEY=<VERY LONG RANDOM SECRET KEY>
 ```
+
+## Static
+
+For static sites we have two examples:
+
+* just a plain `index.html`
+
+    ```bash
+    nctl create application static-html \
+      --git-url=https://github.com/ninech/deploio-examples \
+      --git-sub-path=static/html
+    ```
+
+* a frontend react app built with `npm`
+
+    ```bash
+    nctl create application static-react \
+      --git-url=https://github.com/ninech/deploio-examples \
+      --git-sub-path=static/react
+    ```
