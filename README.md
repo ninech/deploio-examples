@@ -29,7 +29,9 @@ nctl create application rails \
 ```bash
 nctl create application nextjs \
   --git-url=https://github.com/ninech/deploio-examples \
-  --git-sub-path=nodejs/nextjs
+  --git-sub-path=nodejs/nextjs \
+  --build-env=NODE_ENV="production" \
+  --env=NODE_ENV="production"
 ```
 
 ## PHP
