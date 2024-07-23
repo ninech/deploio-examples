@@ -1,4 +1,4 @@
-FROM rust:1 AS build-env
+FROM rust:slim AS build-env
 WORKDIR /app
 COPY . /app
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
