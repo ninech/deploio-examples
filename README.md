@@ -84,3 +84,17 @@ For static sites we have two examples:
       --git-url=https://github.com/ninech/deploio-examples \
       --git-sub-path=static/react
     ```
+
+## Dockerfile
+
+With Dockerfile builds, deplo.io can build any app that can be built using a
+Dockerfile. To demonstrate this we have the following sample apps:
+
+* a very basic Rust app:
+
+    ```bash
+    nctl create application dockerfile-rust \
+    --git-url=https://github.com/ninech/deploio-examples \
+    --git-sub-path=dockerfile/rust \
+    --dockerfile
+    ```
