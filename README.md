@@ -1,7 +1,7 @@
 # deploio-examples
 
 This repository hosts example apps for different languages and frameworks that
-are being supported by deplo.io. Please also check out our [language specific
+are being supported by Deploio. Please also check out our [language specific
 documentation](https://docs.nine.ch/docs/category/languages) for more details.
 
 ## Go
@@ -87,7 +87,7 @@ For static sites we have two examples:
 
 ## Dockerfile
 
-With Dockerfile builds, deplo.io can build any app that can be built using a
+With Dockerfile builds, Deploio can build any app that can be built using a
 Dockerfile. To demonstrate this we have the following sample apps:
 
 * a very basic Rust app:
