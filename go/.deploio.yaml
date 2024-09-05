@@ -3,4 +3,4 @@ port: 5678
 replicas: 1
 env:
   - name: RESPONSE_TEXT
-    value: "Hello from a Go deplo.io app!"
+    value: "Hello from a Go Deploio app!"
