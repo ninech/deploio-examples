@@ -4,7 +4,7 @@ from django.db import migrations
 
 def add_welcome_messages(apps, schema_editor):
     WelcomeMessage = apps.get_model("index", "WelcomeMessage")
-    for msg in ["Welcome to deplo.io", "Deployments made easy", "This is a sample Django app"]:
+    for msg in ["Welcome to Deploio", "Deployments made easy", "This is a sample Django app"]:
         temp = WelcomeMessage(text=msg)
         temp.save()
 
