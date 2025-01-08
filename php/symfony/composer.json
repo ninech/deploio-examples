@@ -1,4 +1,6 @@
 {
+    "name": "nine/deploio-example-symfony",
+    "description": "this is an example symfony app",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
