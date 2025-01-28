@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>URL Shortener</title>
+    <style>
+        body {
+            margin: 1em 2em;
+            font-family: sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1em;
+            table-layout: fixed;
+        }
+
+        th, td {
+            border: 1px solid gray;
+            padding: 0.5em 1em;
+            text-align: left;
+        }
+
+        th {
+            text-align: center;
+            background-color: lightgrey;
+            font-weight: bold;
+        }
+
+        footer {
+            padding: 10px;
+            text-align: center;
+        }
+
+        #errors {
+            color: red;
+            margin-bottom: 1em;
+            margin-top: 1em;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div hx-ext="response-targets"
+         hx-target-4*="#errors"
+         hx-target-5*="#errors">
+        <form hx-ext="json-enc"
+              hx-post="/api/shorten"
+              hx-target="#short-urls"
+              hx-swap="beforeend">
+            <div class="short-url-inputs"
+                 hx-target="#errors"
+                 hx-swap="innerHTML">
+                <label>URL
+                    <input type="text" name="url" placeholder="Valid URL"
+                           hx-trigger="keyup changed delay:300ms"
+                           hx-post="/api/validate">
+                </label>
+                <label>Short Code
+                    <input type="text" name="shortCode" placeholder="Optional"
+                           hx-trigger="keyup changed delay:300ms"
+                           hx-post="/api/validate">
+                </label>
+                <button type="submit">Shorten</button>
+            </div>
+        </form>
+
+        <div id="errors"></div>
+        <div id="short-urls-wrapper" hx-include="[name='shortCodes']">
+            <input id="short-urls-stats" type="hidden" name="shortCodes" value=""/>
+            <div id="short-urls-loader"
+                 hx-get="/api/stats"
+                 hx-trigger="every 3s"
+                 hx-target="#short-urls"
+                 hx-swap="innerHTML">
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th>Short URL</th>
+                    <th>URL</th>
+                    <th>Visitors</th>
+                </tr>
+                </thead>
+                <tbody id="short-urls">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<footer><i>Note: The contents of this table are temporary and will disappear when the page is refreshed. Redirects and visitor counter will continue to work.</i></footer>
+<script src="https://unpkg.com/htmx.org@1.9.6"></script>
+<script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
+<script src="https://unpkg.com/htmx-ext-response-targets@2.0.0/response-targets.js"></script>
+<script>
+    document.body.addEventListener('htmx:afterSettle', function (event) {
+        let shortCodes = [];
+        document.getElementById('short-urls').querySelectorAll('td:first-child').forEach(td => {
+            if (td.textContent.trim() !== 'Short URL') {
+                shortCodes.push(td.textContent.trim());
+            }
+        });
+        document.getElementById('short-urls-stats').setAttribute('value', shortCodes.join(','));
+    });
+</script>
+</body>
+</html>

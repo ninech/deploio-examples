@@ -98,3 +98,16 @@ Dockerfile. To demonstrate this we have the following sample apps:
     --git-sub-path=dockerfile/rust \
     --dockerfile
     ```
+* a Java app based on Spring Boot that integrates with an [On-Demand Key-Value Store](https://docs.nine.ch/de/docs/on-demand-databases/on-demand-key-value-store/):
+
+  ```bash
+  nctl create application dockerfile-java-kvs \
+  --git-url=https://github.com/ninech/deploio-examples \
+  --git-sub-path=dockerfile/java-kvs \
+  --env=KVS_HOST=<KEY-VALUE STORE HOSTNAME FROM COCKPIT OR NCTL> \
+  --env=KVS_PASSWORD=<KEY-VALUE STORE PASSWORD FROM COCKPIT OR NCTL> \
+  --env=KVS_SSL_ENABLED=true \
+  --dockerfile
+  ```
+
+  See [dockerfile/java-kvs/README.md](dockerfile/java-kvs/README.md) for details and full setup instructions.
