@@ -1,6 +1,11 @@
 size: micro
 port: 5678
 replicas: 1
+scheduledJobs:
+  - name: sidekiq
+    command: "sleep 5; date"
+    size: mini
+    schedule: "* * * * *"
 env:
   - name: RESPONSE_TEXT
     value: "Hello from a Go Deploio app!"
