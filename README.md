@@ -111,3 +111,22 @@ Dockerfile. To demonstrate this we have the following sample apps:
   ```
 
   See [dockerfile/java-kvs/README.md](dockerfile/java-kvs/README.md) for details and full setup instructions.
+
+## KVS
+
+To make this example work, you need to first create a KVS instance:
+
+```bash
+nctl create kvs <kvs-name>
+```
+
+Once it is ready you can use the following command to create the app:
+
+```bash
+export KVSCLI_AUTH=$(nctl get kvs test --print-token)
+export KVS_HOST=$(nctl get kvs test -o yaml | yq '.status.atProvider.fqdn')
+nctl create application go \
+  --git-url=https://github.com/ninech/deploio-examples \
+  --git-sub-path=kvs \
+  --env="KVS_HOST=$KVS_HOST;KVSCLI_AUTH=$KVSCLI_AUTH"
+```
