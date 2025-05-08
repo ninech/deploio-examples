@@ -114,7 +114,7 @@ Dockerfile. To demonstrate this we have the following sample apps:
 
 ## KVS
 
-To make this example work, you need to first create a KVS instance:
+This example uses an [On-Demand Key-Value Store](https://docs.nine.ch/de/docs/on-demand-databases/on-demand-key-value-store/).To get started, you'll need to first create a KVS instance - either through `nctl` or via the [Cockpit](https://cockpit.nine.ch/en) interface: 
 
 ```bash
 nctl create kvs <kvs-name>
