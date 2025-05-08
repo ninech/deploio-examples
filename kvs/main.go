@@ -19,7 +19,7 @@ func main() {
 	kvsHost := os.Getenv("KVS_HOST")
 	kvsPassword := os.Getenv("KVS_PASSWORD")
 	if kvsHost == "" || kvsPassword == "" {
-		log.Fatal("KVS_HOST and KVSCLI_AUTH environment variables must be set")
+		log.Fatal("KVS_HOST and KVS_PASSWORD environment variables must be set")
 	}
 
 	rdb = redis.NewClient(&redis.Options{
