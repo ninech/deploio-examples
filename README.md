@@ -123,7 +123,7 @@ nctl create kvs <kvs-name>
 Once your instance is ready you can create the app using the command below. You’ll need the instance’s connection details (FQDN and TOKEN), which can be retrieved using `nctl` or found in Cockpit under “Access Information.” For more details, see [Key-Value Store docs](https://docs.nine.ch/docs/on-demand-databases/on-demand-key-value-store#connecting):
 
 ```bash
-export KVSCLI_AUTH=$(nctl get kvs test --print-token)
+export KVS_PASSWORD=$(nctl get kvs test --print-token)
 export KVS_HOST=$(nctl get kvs test -o yaml | yq '.status.atProvider.fqdn')
 nctl create application go \
   --git-url=https://github.com/ninech/deploio-examples \
