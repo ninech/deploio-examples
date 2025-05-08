@@ -17,7 +17,7 @@ var ctx = context.Background()
 
 func main() {
 	kvsHost := os.Getenv("KVS_HOST")
-	kvsPassword := os.Getenv("KVSCLI_AUTH")
+	kvsPassword := os.Getenv("KVS_PASSWORD")
 	if kvsHost == "" || kvsPassword == "" {
 		log.Fatal("KVS_HOST and KVSCLI_AUTH environment variables must be set")
 	}
