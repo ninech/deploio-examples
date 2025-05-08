@@ -111,3 +111,22 @@ Dockerfile. To demonstrate this we have the following sample apps:
   ```
 
   See [dockerfile/java-kvs/README.md](dockerfile/java-kvs/README.md) for details and full setup instructions.
+
+## KVS
+
+This example uses an [On-Demand Key-Value Store](https://docs.nine.ch/de/docs/on-demand-databases/on-demand-key-value-store/).To get started, you'll need to first create a KVS instance - either through `nctl` or via the [Cockpit](https://cockpit.nine.ch/en) interface: 
+
+```bash
+nctl create kvs <kvs-name>
+```
+
+Once your instance is ready you can create the app using the command below. You’ll need the instance’s connection details (FQDN and TOKEN), which can be retrieved using `nctl` or found in Cockpit under “Access Information.” For more details, see [Key-Value Store docs](https://docs.nine.ch/docs/on-demand-databases/on-demand-key-value-store#connecting):
+
+```bash
+export KVS_PASSWORD=$(nctl get kvs test --print-token)
+export KVS_HOST=$(nctl get kvs test -o yaml | yq '.status.atProvider.fqdn')
+nctl create application go \
+  --git-url=https://github.com/ninech/deploio-examples \
+  --git-sub-path=kvs \
+  --env="KVS_HOST=$KVS_HOST;KVS_PASSWORD=$KVS_PASSWORD"
+```
