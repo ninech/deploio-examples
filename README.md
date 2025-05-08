@@ -120,7 +120,7 @@ This example uses an [On-Demand Key-Value Store](https://docs.nine.ch/de/docs/on
 nctl create kvs <kvs-name>
 ```
 
-Once it is ready you can use the following command to create the app:
+Once your instance is ready you can create the app using the command below. You’ll need the instance’s connection details (FQDN and TOKEN), which can be retrieved using `nctl` or found in Cockpit under “Access Information.” For more details, see [Key-Value Store docs](https://docs.nine.ch/docs/on-demand-databases/on-demand-key-value-store#connecting):
 
 ```bash
 export KVSCLI_AUTH=$(nctl get kvs test --print-token)
