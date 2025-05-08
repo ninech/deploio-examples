@@ -128,5 +128,5 @@ export KVS_HOST=$(nctl get kvs test -o yaml | yq '.status.atProvider.fqdn')
 nctl create application go \
   --git-url=https://github.com/ninech/deploio-examples \
   --git-sub-path=kvs \
-  --env="KVS_HOST=$KVS_HOST;KVSCLI_AUTH=$KVSCLI_AUTH"
+  --env="KVS_HOST=$KVS_HOST;KVS_PASSWORD=$KVS_PASSWORD"
 ```
