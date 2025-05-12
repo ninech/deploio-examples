@@ -36,10 +36,29 @@ nctl create application nextjs \
 
 ## PHP
 
+A plain PHP application without a framework is provided at `php/plain`.
+You can launch it with:
+
+```bash
+nctl create application php-plain \
+  --git-url=https://github.com/ninech/deploio-examples \
+  --git-sub-path=php/plain \
+  --build-env=BP_PHP_WEB_DIR=public \
+  --build-env=BP_COMPOSER_INSTALL_OPTIONS="--ignore-platform-reqs"
+```
+
+We also provide a Symfony sample application that makes use of all currently
+available services on Deploio.
+For the Symfony application to work, you will need to set up a database, a key
+value store and object storage as explained in the
+[tutorial](https://docs.deplo.io/quick_start/PHP/create_app/).
+
 ```bash
 nctl create application symfony \
   --git-url=https://github.com/ninech/deploio-examples \
-  --git-sub-path=php/symfony
+  --git-sub-path=php/symfony\
+  --build-env=BP_PHP_WEB_DIR=public \
+  --build-env=BP_COMPOSER_INSTALL_OPTIONS="--ignore-platform-reqs --no-scripts -o"
 ```
 
 ## Python
