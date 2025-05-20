@@ -1,0 +1,8 @@
+webf_flysystem_dsn:
+  adapters:
+    persistent_adapter: '%env(STORAGE_URL)%'
+
+flysystem:
+  storages:
+    persistent.storage:
+      adapter: webf_flysystem_dsn.adapter.persistent_adapter
