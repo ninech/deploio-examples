@@ -1,8 +1,9 @@
 # deploio-examples
 
-This repository hosts example apps for different languages and frameworks that
-are being supported by Deploio. Please also check out our [language specific
-documentation](https://docs.nine.ch/docs/category/languages) for more details.
+This repository hosts example code for different languages and frameworks
+supported by Deploio. More information can be found in the
+[Deploio User Guides](https://docs.deplo.io/) or in the
+[Nine Platform Reference](https://docs.nine.ch/docs/category/deploio-paas).
 
 ## Go
 
