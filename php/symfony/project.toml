@@ -1,9 +1,12 @@
+[com.heroku.buildpacks.deb-packages]
+install = ["php-opcache"]
+
 [[build.env]]
-  name="BP_PHP_SERVER"
-  value="nginx"
+name = "BP_PHP_SERVER"
+value = "nginx"
 [[build.env]]
-  name="BP_PHP_WEB_DIR"
-  value="public"
+name = "BP_PHP_WEB_DIR"
+value = "public"
 [[build.env]]
-  name="BP_COMPOSER_INSTALL_OPTIONS"
-  value="--no-scripts -o"
+name = "BP_COMPOSER_INSTALL_OPTIONS"
+value = "--no-scripts -o"
