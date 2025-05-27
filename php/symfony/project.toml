@@ -1,5 +1,5 @@
 [com.heroku.buildpacks.deb-packages]
-install = ["php-opcache"]
+install = ["php8.3-igbinary"]
 
 [[build.env]]
 name = "BP_PHP_SERVER"

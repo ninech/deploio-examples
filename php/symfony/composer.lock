@@ -11007,7 +11007,7 @@
         "ext-iconv": "*",
         "ext-pdo": "*",
         "ext-pdo_mysql": "*",
-        "ext-opcache": "*",
+        "ext-igbinary": "*",
         "ext-pdo_pgsql": "*"
     },
     "platform-dev": {},

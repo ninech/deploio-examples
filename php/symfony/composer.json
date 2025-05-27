@@ -10,7 +10,7 @@
         "ext-pdo": "*",
         "ext-pdo_mysql": "*",
         "ext-pdo_pgsql": "*",
-        "ext-opcache": "*",
+        "ext-igbinary": "*",
         "doctrine/doctrine-bundle": "^2.10",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.16",
