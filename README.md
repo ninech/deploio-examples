@@ -13,7 +13,7 @@ nctl create application go \
   --git-sub-path=go
 ```
 
-## Ruby
+## Ruby on Rails
 
 This requires the `rails` command to be installed for the `SECRET_KEY_BASE`.
 If you don't have it, any long random string will do (127+ chars).
@@ -23,6 +23,14 @@ nctl create application rails \
   --git-url=https://github.com/ninech/deploio-examples \
   --git-sub-path=ruby/rails-basic \
   --env=SECRET_KEY_BASE=$(rails secret)
+```
+
+## Ruby - Sinatra on Falcon
+
+```bash
+nctl create app falcon-features-sinatra \
+     --git-url=https://github.com/ninech/deploio-examples \
+     --git-sub-path=ruby/falcon-sinatra
 ```
 
 ## Node.js
