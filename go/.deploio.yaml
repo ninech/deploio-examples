@@ -3,4 +3,8 @@ port: 5678
 replicas: 1
 env:
   - name: RESPONSE_TEXT
-    value: "Hello from a Go Deploio app!"
+    value: "Hello from a Go Deploio app! Test custom probes"
+healthProbe:
+  httpGet:
+    path: /healthz
+  periodSeconds: 13

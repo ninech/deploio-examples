@@ -8,7 +8,9 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"sync/atomic"
 	"text/template"
+	"time"
 )
 
 const (
@@ -21,6 +23,8 @@ const (
 
 //go:embed index.html.tmpl
 var content embed.FS
+
+var ready atomic.Bool
 
 func main() {
 	if val, ok := os.LookupEnv(exitEnvKey); ok {
@@ -36,6 +40,40 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// /healthz is a simple example of a custom health probe endpoint.
+	// In Deploio, applications run on Kubernetes. By default, a pod is marked as
+	// ready as soon as the web server starts listening on its port. If the app
+	// still needs extra startup work (e.g., load data, run migrations), traffic
+	// may be sent too early, causing temporary errors.
+	// A custom health probe URL solves this by letting the app decide when it is
+	// actually healthy and ready to serve requests. The platform calls this URL in
+	// the background until it responds successfully, and only then starts sending
+	// traffic.
+	//
+	// This endpoint is optional - if you don't specify one, the platform will use
+	// its default health check configuration instead.
+	//
+	// In this demo, /healthz simulates that behavior: it returns an error during a
+	// short warm-up period, then "OK" once the app is fully ready. You can adapt
+	// this pattern in your own application to give Deploio a more
+	// accurate signal of application health.
+	http.HandleFunc("/healthz", func(w http.ResponseWriter, req *http.Request) {
+		if ready.Load() {
+			log.Printf("Received /healthz check from %s: ready", req.RemoteAddr)
+			w.WriteHeader(http.StatusOK)
+			fmt.Fprintln(w, "OK")
+			return
+		}
+		log.Printf("Received /healthz check from %s: not ready", req.RemoteAddr)
+		http.Error(w, "not ready", http.StatusServiceUnavailable)
+	})
+	// Simulate startup/readiness delay (5 seconds)
+	go func() {
+		time.Sleep(5 * time.Second)
+		ready.Store(true)
+		log.Println("App is now ready")
+	}()
 
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		ip, _, err := net.SplitHostPort(req.RemoteAddr)
