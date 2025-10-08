@@ -4,3 +4,9 @@ replicas: 1
 env:
   - name: RESPONSE_TEXT
     value: "Hello from a Go Deploio app!"
+# This endpoint is optional - if you don't specify one, the platform will use
+# its default health check configuration instead.
+healthProbe:
+  httpGet:
+    path: /healthz
+  periodSeconds: 10
