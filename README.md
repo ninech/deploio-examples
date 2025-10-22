@@ -60,7 +60,7 @@ We also provide a Symfony sample application that makes use of all currently
 available services on Deploio.
 For the Symfony application to work, you will need to set up a database, a key
 value store and object storage as explained in the
-[tutorial](https://docs.deplo.io/quick_start/PHP/create_app/).
+[tutorial](https://docs.deplo.io/quick-start/php/create_app).
 
 ```bash
 nctl create application symfony \
