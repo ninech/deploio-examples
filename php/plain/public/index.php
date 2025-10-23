@@ -57,10 +57,10 @@ $image = $imagine->open(__DIR__.'/../resources/deploio.png')
 <h1>MySQL Test</h1>
 <?php
 
-$dbname = getenv('DBNAME'];
-$dbuser = getenv['DBUSER'];
-$dbpass = getenv['DBPASS'];
-$dbhost = getenv['DBHOST'];
+$dbname = getenv('DBNAME');
+$dbuser = getenv('DBUSER');
+$dbpass = getenv('DBPASS');
+$dbhost = getenv('DBHOST');
 
 $link = mysqli_connect($dbhost, $dbuser, $dbpass) or die("Unable to Connect to '$dbhost'");
 mysqli_select_db($link, $dbname) or die("Could not open the db '$dbname'")
