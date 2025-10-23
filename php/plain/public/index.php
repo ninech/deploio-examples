@@ -62,7 +62,9 @@ $dbuser = getenv('DBUSER');
 $dbpass = getenv('DBPASS');
 $dbhost = getenv('DBHOST');
 
-$link = mysqli_connect($dbhost, $dbuser, $dbpass);
+$link = mysqli_init();
+mysqli_options($link, MYSQLI_OPT_SSL_VERIFY_SERVER_CERT, false);
+mysqli_real_connect($link, $dbhost, $dbuser, $dbpass);
 
 if (!$link) {
   echo mysqli_connect_errno() . ":" . mysqli_connect_error();
