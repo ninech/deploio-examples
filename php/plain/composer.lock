@@ -78,7 +78,7 @@
     "platform": {
         "php": "^8.0",
         "ext-gd": "*",
-        "mysqli": "*"
+        "ext-mysqli": "*"
     },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"
