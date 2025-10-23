@@ -64,6 +64,7 @@ $dbhost = getenv('DBHOST');
 
 $link = mysqli_init();
 mysqli_options($link, MYSQLI_OPT_SSL_VERIFY_SERVER_CERT, false);
+mysqli_ssl_set($link, NULL, NULL, NULL, NULL, NULL);
 mysqli_real_connect($link, $dbhost, $dbuser, $dbpass);
 
 if (!$link) {
