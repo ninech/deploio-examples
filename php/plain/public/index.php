@@ -62,7 +62,13 @@ $dbuser = getenv('DBUSER');
 $dbpass = getenv('DBPASS');
 $dbhost = getenv('DBHOST');
 
-$link = mysqli_connect($dbhost, $dbuser, $dbpass) or die("Unable to Connect to '$dbhost'");
+$link = mysqli_connect($dbhost, $dbuser, $dbpass);
+
+if (!$link) {
+  echo mysqli_connect_errno() . ":" . mysqli_connect_error();
+  exit;
+}
+
 mysqli_select_db($link, $dbname) or die("Could not open the db '$dbname'");
 
 $test_query = "SHOW TABLES FROM $dbname";
