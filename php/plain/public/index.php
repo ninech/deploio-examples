@@ -54,5 +54,33 @@ $image = $imagine->open(__DIR__.'/../resources/deploio.png')
     <input type="number" id="size" name="size" min="<?= MIN_SIZE ?>" max="<?= MAX_SIZE ?>" value="<?= $size ?>" /> px<br/>
     <input type="submit" value="Scale Image"/>
 </form>
+<h1>MySQL Test</h1>
+<?php
+
+$dbname = getenv('DBNAME'];
+$dbuser = getenv['DBUSER'];
+$dbpass = getenv['DBPASS'];
+$dbhost = getenv['DBHOST'];
+
+$link = mysqli_connect($dbhost, $dbuser, $dbpass) or die("Unable to Connect to '$dbhost'");
+mysqli_select_db($link, $dbname) or die("Could not open the db '$dbname'")
+
+$test_query = "SHOW TABLES FROM $dbname";
+$result = mysqli_query($link, $test_query)
+
+$tblCnt = 0;
+while($tbl = mysqli_fetch_array($result)) {
+    $tblCnt++;
+    #echo $tbl[0]."<br />\n";
+}
+
+if (!$tblCnt) {
+    echo "There are no tables<br />\n";
+} else {
+    echo "There are $tblCnt tables<br />\n";
+}
+
+?>
+
 </body>
 </html>

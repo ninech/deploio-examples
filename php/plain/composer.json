@@ -6,6 +6,7 @@
         "php": "^8.0",
         "imagine/imagine": "^1.5",
         "ext-gd": "*"
+        "mysqli": "*"
     },
     "license": "Apache-2.0"
 }
