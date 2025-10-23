@@ -77,7 +77,7 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^8.0",
-        "ext-gd": "*"
+        "ext-gd": "*",
         "mysqli": "*"
     },
     "platform-dev": {},
