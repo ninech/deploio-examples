@@ -74,13 +74,15 @@ if (!$link) {
 
 mysqli_select_db($link, $dbname) or die("Could not open the db '$dbname'");
 
+echo "Connected to database $dbname on $dbhost\n";
+
 $test_query = "SHOW TABLES FROM $dbname";
 $result = mysqli_query($link, $test_query);
 
 $tblCnt = 0;
 while($tbl = mysqli_fetch_array($result)) {
     $tblCnt++;
-    #echo $tbl[0]."<br />\n";
+    echo $tbl[0]."<br />\n";
 }
 
 if (!$tblCnt) {
