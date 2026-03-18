@@ -1,0 +1,5 @@
+deployJob:
+  name: db-migrations
+  command: bundle exec rails db:migrate
+  retries: 0
+  timeout: 5m
