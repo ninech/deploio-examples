@@ -1,0 +1,15 @@
+test:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>
+
+local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+
+deploio:
+  service: DeploioS3
+  access_key_id: <%= ENV["S3_ACCESS_KEY"] %>
+  secret_access_key: <%= ENV["S3_SECRET_KEY"] %>
+  endpoint: <%= ENV["S3_ENDPOINT"] %>
+  bucket: <%= ENV["S3_BUCKET"] %>
+  host: <%= ENV["S3_BUCKET_HOST"] %>

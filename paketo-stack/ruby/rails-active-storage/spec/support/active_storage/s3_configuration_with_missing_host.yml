@@ -1,0 +1,5 @@
+deploio_s3_test:
+  service: "DeploioS3"
+  access_key_id: ""
+  secret_access_key: ""
+  bucket: ""
