@@ -25,6 +25,56 @@ nctl create application rails \
   --env=SECRET_KEY_BASE=$(rails secret)
 ```
 
+### Ruby On Rails with ActiveStorage
+
+Next to the basic Rails example, we also provide a Rails application that has ActiveStorage configured with 
+Deploio Object Storage. 
+
+Once deployed, you can head to the root page of the app and test the upload functionality. The example app supports 
+direct uploads from the browser (CORS configuration is required as below) and custom bucket hostnames 
+(DNS change required, see below).
+
+```bash
+# setup postgres database
+nctl create postgresdatabase rails-active-storage-db --location=nine-es34 --wait
+DATABASE_URL="$(nctl get postgresdatabase rails-active-storage-db --print-connection-string)"
+
+# setup application
+nctl create application rails-active-storage \
+  --git-url=https://github.com/ninech/deploio-examples \
+  --git-sub-path=ruby/rails-active-storage \
+  --env=SECRET_KEY_BASE=$(rails secret)\;DATABASE_URL=${DATABASE_URL}
+  
+# create bucket
+nctl create bucket --location=nine-es34 rails-active-storage-bucket
+
+# create bucket user
+nctl create bucketuser --location=nine-es34 rails-active-storage-bucketuser
+
+# grant bucket user read & write access to bucket
+nctl update bucket rails-active-storage-bucket --permissions reader=rails-active-storage-bucketuser \
+  --permissions writer=rails-active-storage-bucketuser
+  
+# update application with object storage credentials
+ACCESS_KEY="$(nctl get bucketuser rails-active-storage-bucketuser --print-credentials -o json | jq -r .s3_access_key)"
+SECRET_KEY="$(nctl get bucketuser rails-active-storage-bucketuser --print-credentials -o json | jq -r .s3_secret_key)"
+nctl update app rails-active-storage --env="S3_ACCESS_KEY=${ACCESS_KEY};S3_SECRET_KEY=${SECRET_KEY};S3_ENDPOINT=https://es34.objects.nineapis.ch;S3_BUCKET=rails-active-storage-bucket"
+  
+# optional: custom bucket hostnames
+nctl update bucket rails-active-storage-bucket --custom-hostnames={S3_BUCKET_HOST}
+nctl update app rails-active-storage --env="S3_BUCKET_HOST={S3_BUCKET_HOST}"
+nctl get bucket rails-active-storage-bucket --output="yaml" # setup DNS
+
+# CORS configuration for direct uploads from browser
+# see https://guides.rubyonrails.org/active_storage_overview.html#cross-origin-resource-sharing-cors-configuration
+APP_HOST=$(nctl get app rails-active-storage -o json | jq -r ".status.atProvider.defaultURLs | first")
+nctl update bucket rails-active-storage-bucket \
+  --cors origins=${APP_HOST} \
+  --cors allowed-headers=Content-Type,Content-MD5,Content-Disposition \
+  --cors response-headers=Content-Type,Content-MD5,Content-Disposition,ETag \
+  --cors max-age=3600
+```
+
 ## Ruby - Sinatra on Falcon
 
 ```bash
