@@ -1,0 +1,6 @@
+env:
+  # symfony needs a writable cache/log dir. As the workspace is read-only we set these to use /tmp
+  - name: APP_CACHE_DIR
+    value: /tmp/cache
+  - name: APP_LOG_DIR
+    value: /tmp/log

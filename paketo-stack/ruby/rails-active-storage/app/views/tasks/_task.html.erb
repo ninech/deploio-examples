@@ -1,0 +1,17 @@
+<div id="<%= dom_id task %>">
+  <div>
+    <strong>Title:</strong>
+    <%= task.title %>
+  </div>
+
+  <div>
+    <strong>Attachment:</strong>
+    <%= link_to task.attachment.filename, task.attachment if task.attachment.attached? %>
+  </div>
+
+  <div>
+    <strong>Direct upload attachment:</strong>
+    <%= link_to task.direct_upload_attachment.filename, task.direct_upload_attachment if task.direct_upload_attachment.attached? %>
+  </div>
+</div>
+
