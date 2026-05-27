@@ -1,0 +1,3 @@
+size: micro
+port: 8080
+replicas: 1
