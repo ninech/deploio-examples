@@ -1,1 +1,2 @@
-FROM metabase/metabase:latest
+ARG VERSION=latest
+FROM metabase/metabase:$VERSION
