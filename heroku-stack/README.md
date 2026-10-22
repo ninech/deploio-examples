@@ -1,7 +1,8 @@
 # Heroku Stack Examples
 
 These examples use [Heroku Cloud Native Buildpacks](https://github.com/heroku/cnb-builder-images).
-This is the default stack on Deploio — no extra flag is needed.
+This is the default stack on Deploio. The examples still pass `--buildpack-stack=heroku`
+explicitly so they keep working should the default ever change.
 
 ## Go
 
