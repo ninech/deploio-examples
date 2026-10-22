@@ -9,7 +9,8 @@ A basic Go web application:
 ```bash
 nctl create application go \
   --git-url=https://github.com/ninech/deploio-examples \
-  --git-sub-path=paketo-stack/go
+  --git-sub-path=paketo-stack/go \
+  --buildpack-stack=paketo
 ```
 
 ## Ruby on Rails
@@ -21,6 +22,7 @@ If you don't have it, any long random string will do (127+ chars).
 nctl create application rails \
   --git-url=https://github.com/ninech/deploio-examples \
   --git-sub-path=paketo-stack/ruby/rails-basic \
+  --buildpack-stack=paketo \
   --env=SECRET_KEY_BASE=$(rails secret)
 ```
 
@@ -40,6 +42,7 @@ DATABASE_URL="$(nctl get postgresdatabase rails-active-storage-db --print-connec
 nctl create application rails-active-storage \
   --git-url=https://github.com/ninech/deploio-examples \
   --git-sub-path=paketo-stack/ruby/rails-active-storage \
+  --buildpack-stack=paketo \
   --env=SECRET_KEY_BASE=$(rails secret)\;DATABASE_URL=${DATABASE_URL}
 
 # create bucket
@@ -79,7 +82,8 @@ A Ruby application using Sinatra with the Falcon web server:
 ```bash
 nctl create app falcon-features-sinatra \
      --git-url=https://github.com/ninech/deploio-examples \
-     --git-sub-path=paketo-stack/ruby/falcon-sinatra
+     --git-sub-path=paketo-stack/ruby/falcon-sinatra \
+     --buildpack-stack=paketo
 ```
 
 ## Node.js
@@ -90,6 +94,7 @@ A Next.js application:
 nctl create application nextjs \
   --git-url=https://github.com/ninech/deploio-examples \
   --git-sub-path=paketo-stack/nodejs/nextjs \
+  --buildpack-stack=paketo \
   --build-env=NODE_ENV="production" \
   --env=NODE_ENV="production"
 ```
@@ -102,6 +107,7 @@ A plain PHP application without a framework:
 nctl create application php-plain \
   --git-url=https://github.com/ninech/deploio-examples \
   --git-sub-path=paketo-stack/php/plain \
+  --buildpack-stack=paketo \
   --build-env=BP_PHP_WEB_DIR=public \
   --build-env=BP_COMPOSER_INSTALL_OPTIONS="--ignore-platform-reqs"
 ```
@@ -114,6 +120,7 @@ explained in the [tutorial](https://docs.deplo.io/quick-start/php/create_app).
 nctl create application symfony \
   --git-url=https://github.com/ninech/deploio-examples \
   --git-sub-path=paketo-stack/php/symfony \
+  --buildpack-stack=paketo \
   --build-env=BP_PHP_WEB_DIR=public \
   --build-env=BP_COMPOSER_INSTALL_OPTIONS="--ignore-platform-reqs --no-scripts -o"
 ```
@@ -132,6 +139,7 @@ the credentials you pass via the env variables below to log in.
 nctl create application django-example \
   --git-url=https://github.com/ninech/deploio-examples \
   --git-sub-path=paketo-stack/python/django \
+  --buildpack-stack=paketo \
   --env=DJANGO_SU_NAME=admin \
   --env=DJANGO_SU_EMAIL=admin@example.com \
   --env=DJANGO_SU_PASSWORD=<INSERT A PASSWORD HERE> \
@@ -145,7 +153,8 @@ A plain `index.html`:
 ```bash
 nctl create application static-html \
   --git-url=https://github.com/ninech/deploio-examples \
-  --git-sub-path=paketo-stack/static/html
+  --git-sub-path=paketo-stack/static/html \
+  --buildpack-stack=paketo
 ```
 
 A frontend React app built with `npm`:
@@ -153,7 +162,8 @@ A frontend React app built with `npm`:
 ```bash
 nctl create application static-react \
   --git-url=https://github.com/ninech/deploio-examples \
-  --git-sub-path=paketo-stack/static/react
+  --git-sub-path=paketo-stack/static/react \
+  --buildpack-stack=paketo
 ```
 
 ## KVS
@@ -176,6 +186,7 @@ export KVS_HOST=$(nctl get kvs test -o yaml | yq '.status.atProvider.fqdn')
 nctl create application go \
   --git-url=https://github.com/ninech/deploio-examples \
   --git-sub-path=paketo-stack/kvs \
+  --buildpack-stack=paketo \
   --env="KVS_HOST=$KVS_HOST;KVS_PASSWORD=$KVS_PASSWORD"
 ```
 
