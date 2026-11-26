@@ -33,6 +33,14 @@ See [java-kvs/README.md](java-kvs/README.md) for full setup instructions.
 
 ## Ruby on Rails with SQLite and Litestream
 
+**⚠️ Experimental: Attention, there are some risks you should understand before using this:**
+* You must disable rolling releases (e.g. by pausing the app)
+* You can have only one replica, no deploy jobs and no background workers
+* You should read about [known issues](https://github.com/fractaledmind/litestream-ruby#known-issues-with-litestream-0517)
+* Nine's planned maintenance windows might still allow for parallel access to your SQLite database and leave the database in a damaged state.
+
+If you are ok with the above, continue here.
+
 A one-file Rails application that keeps its data in SQLite on the ephemeral filesystem
 and uses [Litestream](https://litestream.io) to stream every change to Object Storage.
 On start it restores the database from the bucket. Run it with a single replica and
