@@ -1,0 +1,4 @@
+# One writer only: Litestream breaks the replica if two containers write to it. nctl --replicas overrides this.
+# There is no deployJob on purpose: it would prepare a copy that is thrown away. app.rb creates its table on boot.
+size: micro
+replicas: 1

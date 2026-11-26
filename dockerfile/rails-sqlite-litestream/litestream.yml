@@ -1,0 +1,15 @@
+# Litestream is the container's process: it restores the database if the file is missing,
+# runs Puma and streams every committed transaction to the bucket until Puma exits.
+# Nine object storage always expects region us-east-1.
+exec: bundle exec puma -C puma.rb
+dbs:
+  - path: storage/production.sqlite3
+    restore-if-db-not-exists: true
+    replica:
+      type: s3
+      endpoint: ${S3_ENDPOINT}
+      region: us-east-1
+      bucket: ${S3_BUCKET}
+      path: production.sqlite3
+      access-key-id: ${S3_ACCESS_KEY}
+      secret-access-key: ${S3_SECRET_KEY}

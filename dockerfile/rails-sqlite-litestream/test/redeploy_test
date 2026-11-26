@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+# Replays deploys of the paused-then-unpaused kind locally: one container after the other runs
+# the image's command against one S3 bucket (rclone serve s3), and every note must survive.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+command -v rclone >/dev/null || { echo "rclone is required (it serves the local S3 bucket)"; exit 1; }
+
+work="$(mktemp -d)"
+pids=()
+cleanup() {
+  for pid in "${pids[@]}"; do pkill -KILL -s "$pid" 2>/dev/null || true; done
+}
+trap cleanup EXIT
+
+# Containers have no systemd; a desktop session would make Puma try to notify it.
+unset NOTIFY_SOCKET
+export RAILS_ENV=production SECRET_KEY_BASE="$(openssl rand -hex 64)" BUNDLE_GEMFILE="$PWD/Gemfile"
+export S3_ENDPOINT=http://127.0.0.1:9000 S3_BUCKET=app S3_ACCESS_KEY=test S3_SECRET_KEY=testsecret
+
+fail() { echo "FAIL: $1"; for log in "$work"/*.log; do echo "--- $log"; tail -30 "$log"; done; exit 1; }
+step() { echo "== $1"; }
+
+status_of() { curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:$1/" || true; }
+
+wait_for_status() {
+  local port="$1" expected="$2"
+  for _ in $(seq 1 120); do
+    [ "$(status_of "$port")" = "$expected" ] && return 0
+    sleep 0.5
+  done
+  fail "port $port never answered $expected"
+}
+
+create_note() {
+  local port="$1" body="$2"
+  curl -s -D "$work/headers" "http://127.0.0.1:$port/" > "$work/form"
+  local token cookie code
+  # The note form comes last; the Delete buttons above it carry tokens for their own forms.
+  token="$(grep -o 'name="authenticity_token" value="[^"]*"' "$work/form" | tail -1 | sed 's/.*value="//; s/"$//')"
+  cookie="$(grep -i '^set-cookie:' "$work/headers" | head -1 | sed 's/^[Ss]et-[Cc]ookie: //; s/;.*//')"
+  code="$(curl -s -o /dev/null -w '%{http_code}' -H "Cookie: $cookie" \
+    --data-urlencode "authenticity_token=$token" --data-urlencode "note[body]=$body" \
+    "http://127.0.0.1:$port/notes")"
+  [ "$code" = "302" ] || fail "creating '$body' on port $port answered $code"
+}
+
+expect_notes() {
+  local port="$1"; shift
+  local page
+  page="$(curl -s "http://127.0.0.1:$port/")"
+  for body in "$@"; do
+    grep -qF "$body" <<<"$page" || fail "port $port is missing note '$body'"
+  done
+}
+
+start_container() {
+  local name="$1" port="$2"
+  (cd "$work/$name" && PORT="$port" exec setsid bundle exec litestream replicate -config litestream.yml > "$work/$name.log" 2>&1) &
+  pids+=("$!")
+  eval "${name}_pid=$!"
+}
+
+step "preparing three copies of the app (one per container) and a local S3 bucket"
+mkdir -p "$work/s3/app" "$work/a"
+tar --exclude=./tmp --exclude=./log --exclude=./storage --exclude=./.claude -cf - . | tar -xf - -C "$work/a"
+cp -r "$work/a" "$work/b"
+cp -r "$work/a" "$work/c"
+rclone serve s3 --addr 127.0.0.1:9000 --auth-key test,testsecret "$work/s3" > "$work/s3.log" 2>&1 &
+pids+=("$!")
+
+step "first deploy: A finds no replica and starts empty"
+start_container a 3101
+wait_for_status 3101 200
+create_note 3101 "written by A"
+# Rails creates the file after Litestream started; give Litestream its first snapshot.
+for _ in $(seq 1 20); do [ -n "$(find "$work/s3/app" -name '*.ltx')" ] && break; sleep 0.5; done
+create_note 3101 "written by A right before SIGTERM"
+
+step "pausing stops A: Puma finishes, Litestream uploads the last changes"
+kill -TERM "$a_pid"
+wait "$a_pid" || fail "A exited non-zero after SIGTERM"
+
+step "unpausing starts B, which restores everything A wrote"
+start_container b 3102
+wait_for_status 3102 200
+expect_notes 3102 "written by A" "written by A right before SIGTERM"
+
+step "B crashes a few seconds after a write: Litestream had already streamed it"
+create_note 3102 "written by B before the crash"
+sleep 3
+pkill -KILL -s "$b_pid"
+start_container c 3103
+wait_for_status 3103 200
+expect_notes 3103 "written by A" "written by A right before SIGTERM" "written by B before the crash"
+
+kill -TERM "$c_pid"
+wait "$c_pid" || fail "C exited non-zero after SIGTERM"
+echo "Every note survived the redeploys"
